@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 
+enum FRACTION_ERRORS{ZERO_DENOM};
+
 using namespace std;
 class fraction
 {
@@ -162,6 +164,7 @@ protected:
     int& numerator();
     int& denominator();
     void reduce();
+    void setNum(int n, int d);
 
 private:
     int num, denom;
@@ -170,5 +173,6 @@ private:
 
 
 };
+
 
 #endif // FRACTION_H

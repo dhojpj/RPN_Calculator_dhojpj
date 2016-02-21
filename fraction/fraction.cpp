@@ -1,10 +1,15 @@
 #include "fraction.h"
 
-// constructor
+// constructor//?????????????????????????????????????????????????
 fraction::fraction(int n, int d)
 {
-    num = n;
-    denom = d;
+    setNum(n,d);
+//    int sign = 1;
+//    if(d == 0)
+//        throw ZERO_DENOM;
+//    denom < 0  ? sign = -1:sign = 1;
+//    denom = sign*d;
+//    num = sign*n;
 }
 
 // destructor
@@ -42,29 +47,78 @@ fraction& fraction::operator=(const fraction &other)
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++
-fraction& fraction::operator=(int other){}
+fraction& fraction::operator=(int other)
+{
+    setNum(other, 1);
+}
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++
-fraction& fraction::operator=(double other){}
+fraction& fraction::operator=(double other)
+{
+
+}
+
 void fraction::setValue(int n, int d)
 {
-    numerator() = n;
-    denominator() = d;
+    setNum(n,d);
 }
 
 fraction& fraction::operator+=(const fraction &other)
-{
+{   // (a*d+b*c)/b*d
+    num = num*other.denom+denom*other.num;
+    denom = denom*other.denom;
 
+    this->reduce();
+    return *this;
 }
 
-fraction& fraction::operator-=(const fraction &other){}
-fraction& fraction::operator*=(const fraction &other){}
-fraction& fraction::operator/=(const fraction &other){}
-fraction& fraction::operator^=(const fraction &other){}
-fraction& fraction::operator+=(int other){}
-fraction& fraction::operator-=(int other){}
-fraction& fraction::operator*=(int other){}
-fraction& fraction::operator/=(int other){}
+fraction& fraction::operator-=(const fraction &other)
+{
+    num = num*other.denom-denom*other.num;
+    denom = denom*other.denom;
+    this->reduce();
+    return *this;
+}
+fraction& fraction::operator*=(const fraction &other)
+{
+    num = num*other.num;
+    denom = denom*other.denom;
+
+    this->reduce();
+    return *this;
+}
+fraction& fraction::operator/=(const fraction &other)
+{
+    num = num*other.denom;
+    denom = denom*other.num;
+
+    this->reduce();
+    return *this;
+}
+fraction& fraction::operator^=(const fraction &other)
+{
+    //not sure yet
+}
+fraction& fraction::operator+=(int other)
+{
+    fraction c(other,1);
+    return *this+=c;
+}
+fraction& fraction::operator-=(int other)
+{
+    fraction c(other,1);
+    return *this-=c;
+}
+fraction& fraction::operator*=(int other)
+{
+    fraction c(other,1);
+    return *this*=c;
+}
+fraction& fraction::operator/=(int other)
+{
+    fraction c(other,1);
+    return *this/=c;
+}
 fraction& fraction::operator^=(int other){}
 fraction& fraction::operator+=(double other){}
 fraction& fraction::operator-=(double other){}
@@ -82,6 +136,16 @@ void fraction::reduce()
         this->denom /= g;
     }
 
+}
+
+void fraction::setNum(int n, int d)
+{
+    int sign = 1;
+    if(d == 0)
+        throw ZERO_DENOM;
+    denom < 0  ? sign = -1:sign = 1;
+    denom = sign*d;
+    num = sign*n;
 }
 
 int& fraction::numerator()
@@ -111,7 +175,10 @@ int fraction::gcd(int p, int q)
 
 
 
-fraction& operator+(const fraction &x, const fraction &y){}
+fraction& operator+(const fraction &x, const fraction &y)
+{
+    return (x+=y);
+}
 
 fraction& operator-(const fraction &x, const fraction &y){}
 
